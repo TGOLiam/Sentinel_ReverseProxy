@@ -30,14 +30,12 @@ public class RequestListener {
         System.out.println("Server running at port: " + PORT);
 
         ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
-        Socket socket;
         while(true)
         {
             try{
-                socket = serverSocket.accept();
-                Socket input_socket = socket;
+                Socket socket = serverSocket.accept();
                 executor.submit(
-                        () -> handle_test(input_socket)
+                        () -> handle_test(socket)
                 );
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -59,6 +57,16 @@ public class RequestListener {
             String msg = in.readLine();
             System.out.printf("[%s] %s\n", clientIP, msg);
         } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void handle(Socket socket)
+    {
+        try (socket)
+        {
+
+        } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
